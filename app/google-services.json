@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "216923399261",
+    "firebase_url": "https://drinkwaterandroid-bcec9.firebaseio.com",
+    "project_id": "drinkwaterandroid-bcec9",
+    "storage_bucket": "drinkwaterandroid-bcec9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:216923399261:android:55101dc8cc58448f5e99b4",
+        "android_client_info": {
+          "package_name": "com.bryanpoh.drinkwater"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "216923399261-s2eb3gr2q3bcnc8dceul8oai27l03oea.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bryanpoh.drinkwater",
+            "certificate_hash": "c08305c8c0127c6a69126ed8a5f6357ee953d675"
+          }
+        },
+        {
+          "client_id": "216923399261-n3qip7lplpeuq7nqk6kjhjmagoqd5cf0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCg-sAY9hGUeymnsWYvnUSXF50wI5FIuhU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "216923399261-n3qip7lplpeuq7nqk6kjhjmagoqd5cf0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
