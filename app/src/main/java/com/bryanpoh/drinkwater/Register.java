@@ -69,7 +69,7 @@ public class Register extends AppCompatActivity {
                 } else{
                     register(str_username, str_email, str_password);
 
-                    User userHelper = new User(str_username, str_email, str_password);
+                    //User userHelper = new User(str_username, str_email);
                 }
             }
         });
@@ -90,11 +90,11 @@ public class Register extends AppCompatActivity {
                             hashMap.put("id", userid);
                             hashMap.put("username", username.toLowerCase());
                             hashMap.put("email", email);
-                            hashMap.put("goal_bottle_size", "0");
-                            hashMap.put("default_drink_size", "0");
+                            hashMap.put("drinkSize", "0");
+                            hashMap.put("bottleSize", "0");
 
                             // Added on may 2
-                            new User(username, email, password);
+                            new User(userid, username, email, "0", "0");
 
                             reference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
