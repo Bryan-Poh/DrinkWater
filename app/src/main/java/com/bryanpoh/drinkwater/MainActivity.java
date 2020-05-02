@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -46,11 +47,18 @@ public class MainActivity extends AppCompatActivity {
 
         String date = new SimpleDateFormat("EEE, dd MMM yyyy", Locale.getDefault()).format(new Date());
 
+//        Intent settingIntent = getIntent();
+//        String user_username = settingIntent.getStringExtra("username");
+//
+//        Log.d("tag", "main UN: " + user_username);
+
         tvDate.setText(date);
         intakeProgressBar.setMax(100);
         intakeProgressBar.setProgress(currentProgress);
         currProgressPercent = currentProgress + "%";
         tvIntakePercent.setText(currProgressPercent);
+
+
 
         drinkBtn.setOnClickListener(new View.OnClickListener() {
             @Override

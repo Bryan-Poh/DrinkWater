@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -28,6 +29,7 @@ import org.w3c.dom.Text;
 public class Login extends AppCompatActivity {
 
     EditText email, password;
+    TextView tvToRegister;
     Button loginBtn;
 
     FirebaseAuth auth;
@@ -40,13 +42,23 @@ public class Login extends AppCompatActivity {
         email = findViewById(R.id.loginEmail);
         password = findViewById(R.id.loginPassword);
         loginBtn = findViewById(R.id.btn_login);
+        tvToRegister = findViewById(R.id.tvToRegister);
 
         auth = FirebaseAuth.getInstance();
+
+        tvToRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Login.this, Register.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            }
+        });
 
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String str_email = email.getText().toString();
+                final String str_email = email.getText().toString();
                 String str_password = password.getText().toString();
 
                 if(TextUtils.isEmpty(str_email) || TextUtils.isEmpty(str_password)){
@@ -62,7 +74,13 @@ public class Login extends AppCompatActivity {
                                        reference.addValueEventListener(new ValueEventListener() {
                                            @Override
                                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                                               Intent settingsIntent = new Intent(Login.this, SettingsActivity.class);
+//                                               settingsIntent.putExtra("username", uInfo.getUsername());
+//                                               startActivity(settingsIntent);
+
                                                Intent intent = new Intent(Login.this, MainActivity.class);
+                                               //intent.putExtra("username", uInfo.getUsername());
+                                               //settingsIntent.putExtra("email", email);
                                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                                startActivity(intent);
                                                finish();

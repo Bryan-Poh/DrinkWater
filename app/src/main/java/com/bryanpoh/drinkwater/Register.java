@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -25,6 +26,7 @@ import java.util.HashMap;
 public class Register extends AppCompatActivity {
 
     EditText username, email, password;
+    TextView tvToLogin;
     Button registerBtn;
 
     FirebaseAuth auth;
@@ -39,8 +41,18 @@ public class Register extends AppCompatActivity {
         email = findViewById(R.id.regEmail);
         password = findViewById(R.id.regPassword);
         registerBtn = findViewById(R.id.btn_reg);
+        tvToLogin = findViewById(R.id.tvToLogin);
 
         auth = FirebaseAuth.getInstance();
+
+        tvToLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Register.this, Login.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            }
+        });
 
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,12 +68,14 @@ public class Register extends AppCompatActivity {
                     Toast.makeText(Register.this, "Password must have at least 6 characters", Toast.LENGTH_SHORT).show();
                 } else{
                     register(str_username, str_email, str_password);
+
+                    User userHelper = new User(str_username, str_email, str_password);
                 }
             }
         });
     }
 
-    private void register(final String username, final String email, String password){
+    private void register(final String username, final String email, final String password){
         auth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -76,6 +90,11 @@ public class Register extends AppCompatActivity {
                             hashMap.put("id", userid);
                             hashMap.put("username", username.toLowerCase());
                             hashMap.put("email", email);
+                            hashMap.put("goal_bottle_size", "0");
+                            hashMap.put("default_drink_size", "0");
+
+                            // Added on may 2
+                            new User(username, email, password);
 
                             reference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
