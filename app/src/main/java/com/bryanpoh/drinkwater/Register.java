@@ -102,7 +102,6 @@ public class Register extends AppCompatActivity {
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if(task.isSuccessful()){
                                         Intent intent = new Intent(Register.this, Login.class);
-                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                                         startActivity(intent);
 
                                         Toast.makeText(Register.this, "Account Created. Please Login", Toast.LENGTH_SHORT).show();

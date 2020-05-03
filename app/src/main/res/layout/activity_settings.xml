@@ -1,0 +1,209 @@
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="30dp"
+        android:paddingTop="0dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profileCircleImageView"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="10dp"
+                android:src="@mipmap/ic_launcher_round"
+                app:civ_border_color="@color/colorPrimary"
+                app:civ_border_width="2dp" />
+
+            <TextView
+                android:id="@+id/tvUsername"
+                style="@style/viewParent.headerText"
+                android:layout_marginTop="20dp"
+                android:layout_toRightOf="@id/profileCircleImageView"
+                android:text="User Name"
+                android:textSize="18sp" />
+
+            <TextView
+                style="@style/viewParent.headerText"
+                android:layout_below="@id/tvUsername"
+                android:layout_toRightOf="@id/profileCircleImageView"
+                android:text="Edit personal details"
+                android:textColor="#5D5C5C"
+                android:textSize="16sp" />
+
+            <ImageView
+                style="@style/viewParent"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_more" />
+
+        </RelativeLayout>
+
+        <TextView
+            style="@style/viewParent.headerText.settingsMiniTitle"
+            android:text="Goal Setting" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Your Body Weight (kg)"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/etBodyWeight"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:gravity="center_horizontal"
+                    android:hint="65"
+                    android:inputType="number" />
+
+            </LinearLayout>
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Set Goal Bottle Size (ml)"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/etGoalBottleSize"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:gravity="center"
+                    android:hint="2500"
+                    android:inputType="number" />
+            </LinearLayout>
+
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvRecommend"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/textView10"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="Set Default Drink Size (ml)"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/etDefaultDrinkSize"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:gravity="center"
+                    android:hint="200"
+                    android:inputType="number" />
+
+                <Button
+                    android:id="@+id/btnSaveGoals"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/btn_primary_style"
+                    android:gravity="center"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:text="Save Settings"
+                    android:textColor="@color/colorAccent" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <TextView
+            style="@style/viewParent.headerText.settingsMiniTitle"
+            android:text="Profile" />
+
+        <TextView
+            style="@style/viewParent.headerText.settingsTextIcon"
+            android:drawableLeft="@drawable/ic_edit_profile"
+            android:text="Edit Profile" />
+
+        <TextView
+            style="@style/viewParent.headerText.settingsTextIcon"
+            android:layout_marginTop="10dp"
+            android:drawableLeft="@drawable/ic_edit_password"
+            android:text="Change Password" />
+
+        <TextView
+            style="@style/viewParent.headerText.settingsMiniTitle"
+            android:text="Notifications" />
+
+        <Switch
+            style="@style/settingsText"
+            android:checked="true"
+            android:drawableLeft="@drawable/ic_notifications"
+            android:text="Notifications" />
+
+        <TextView
+            style="@style/viewParent.headerText.settingsMiniTitle"
+            android:text="Others" />
+
+
+        <Button
+            android:id="@+id/btnLogout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/btn_logout"
+            android:text="Logout"
+            android:textColor="@color/colorAccent"
+            android:textStyle="bold" />
+
+        <TextView
+            style="@style/viewParent.headerText.settingsMiniTitle"
+            android:text="App ver 2.0.1"
+            android:textAlignment="center" />
+
+    </LinearLayout>
+</ScrollView>
