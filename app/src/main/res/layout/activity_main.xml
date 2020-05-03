@@ -130,6 +130,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:text="-"
+        android:textSize="22sp"
         app:layout_constraintEnd_toEndOf="@+id/tvIntakeTitle"
         app:layout_constraintStart_toStartOf="@+id/tvIntakeTitle"
         app:layout_constraintTop_toBottomOf="@+id/tvIntakeTitle" />
@@ -171,6 +172,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TextView"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="@+id/progress_circular"
         app:layout_constraintEnd_toEndOf="@+id/progress_circular"
         app:layout_constraintStart_toStartOf="@+id/progress_circular"
@@ -182,6 +184,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:text="-"
+        android:textSize="22sp"
         app:layout_constraintEnd_toEndOf="@+id/tvNextReminder"
         app:layout_constraintStart_toStartOf="@+id/tvNextReminder"
         app:layout_constraintTop_toBottomOf="@+id/tvNextReminder" />
