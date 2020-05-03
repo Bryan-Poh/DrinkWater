@@ -8,7 +8,10 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -80,27 +83,10 @@ public class MainActivity extends AppCompatActivity {
 
         showUserData();
 
-        /*// Notification
-        Intent intent = new Intent(MainActivity.this, MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        PendingIntent pendingIntent = PendingIntent.getActivity(MainActivity.this, 0, intent, 0);
-
-        String notiMsg = "Reminder to stay hydrated! Drink water now!";
-        final NotificationCompat.Builder builder = new NotificationCompat.Builder(MainActivity.this)
-                .setSmallIcon(R.drawable.ic_notificiation_bell)
-                .setContentTitle("New Reminder!")
-                .setContentText(notiMsg)
-                .setContentIntent(pendingIntent) // Set where user goes when tap
-                .setAutoCancel(true) // Removes noti after user tap
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-
-         notificationManager = NotificationCompat.from(MainActivity.this);*/
-
-        //
-
         String date = new SimpleDateFormat("EEE, dd MMM yyyy", Locale.getDefault()).format(new Date());
 
-        // Countdown timer for 1 hour
+        startService(new Intent(this, BroadcastService.class));
+        /*// Countdown timer for 1 hour
         new CountDownTimer(3600000, 1000) {
 
             public void onTick(long millisUntilFinished) {
@@ -115,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
             public void onFinish() {
                 showNotification();
             }
-        }.start();
+        }.start();*/
         //
 
 
@@ -151,6 +137,36 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private BroadcastReceiver br = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getExtras() != null) {
+                String time = intent.getStringExtra("countdown");
+                tvReminder.setText(time);
+            }
+
+            // Expensive because refreshes alot
+            boolean isRemind = intent.getBooleanExtra("remind", false);
+            Log.d("tag", "remind value " + isRemind);
+            if(isRemind) {
+                showNotification();
+            }
+        }
+    };
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        registerReceiver(br, new IntentFilter(BroadcastService.COUNTDOWN_BR));
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        unregisterReceiver(br);
+    }
+
     public void showNotification(){
         String notiMsg = "Reminder to stay hydrated! Drink water now!";
 //
@@ -178,10 +194,6 @@ public class MainActivity extends AppCompatActivity {
 
         Log.d("tag", "Settings UN: " + user_username);
 
-        //tvUsername.setText(user_username);
-
-
-
         // Read from the database
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -203,8 +215,6 @@ public class MainActivity extends AppCompatActivity {
                         String email = ds.child("email").getValue(String.class); // Get username
                         String bottleSize = ds.child("bottleSize").getValue(String.class); // Get
                         String drinkSize = ds.child("drinkSize").getValue(String.class); // Get
-                        /*Log.d("tag", "Userid Keyvalue is: " + key);
-                        Log.d("tag", "USERNAME FINALLY is: " + username);*/
 
                         _USERID = key;
                         _USERNAME = username;
@@ -217,17 +227,6 @@ public class MainActivity extends AppCompatActivity {
 
                 // Set max value of progress bar: bottleSize
                 intakeProgressBar.setMax(Integer.parseInt(_BOTTLESIZE));
-                Log.d("tag", "After bottle" + Integer.parseInt(_BOTTLESIZE));
-
-                // Calculate each drink percent out of bottesize
-                //currentProgress = Integer.parseInt(_DRINKSIZE) / Integer.parseInt(_BOTTLESIZE);
-                Log.d("tag", "CURRENT PROGRESS INSIDE DS: " + currentProgress);
-
-
-                //Log.d("tag", "bottle size: " + Integer.parseInt(_BOTTLESIZE));
-
-                //currProgressPercent = (currentProgress * 100) + "%";
-                //tvIntakePercent.setText(currProgressPercent);
             }
 
             @Override
