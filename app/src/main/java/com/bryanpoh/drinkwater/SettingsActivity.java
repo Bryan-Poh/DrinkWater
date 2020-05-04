@@ -11,6 +11,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +33,7 @@ public class SettingsActivity extends AppCompatActivity {
     TextView tvUsername, tvRecommend;
     EditText etBodyWeight, etBottleSize, etDrinkSize;
     Button btnSave, btnSignout;
+    RelativeLayout editUsername;
 
     private static final String USER = "Users";
     FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -61,7 +63,18 @@ public class SettingsActivity extends AppCompatActivity {
         btnSave = findViewById(R.id.btnSaveGoals);
         btnSignout = findViewById(R.id.btnLogout);
 
+        editUsername = findViewById(R.id.editUsername);
+
+
         showUserData();
+
+        editUsername.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(SettingsActivity.this, EditProfile.class);
+                startActivity(intent);
+            }
+        });
 
         etBodyWeight.addTextChangedListener(new TextWatcher() {
             @Override

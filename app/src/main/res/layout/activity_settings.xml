@@ -13,6 +13,7 @@
         android:paddingTop="0dp">
 
         <RelativeLayout
+            android:id="@+id/editUsername"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -38,7 +39,7 @@
                 style="@style/viewParent.headerText"
                 android:layout_below="@id/tvUsername"
                 android:layout_toRightOf="@id/profileCircleImageView"
-                android:text="Edit personal details"
+                android:text="Edit username"
                 android:textColor="#5D5C5C"
                 android:textSize="16sp" />
 
@@ -166,11 +167,6 @@
 
         <TextView
             style="@style/viewParent.headerText.settingsTextIcon"
-            android:drawableLeft="@drawable/ic_edit_profile"
-            android:text="Edit Profile" />
-
-        <TextView
-            style="@style/viewParent.headerText.settingsTextIcon"
             android:layout_marginTop="10dp"
             android:drawableLeft="@drawable/ic_edit_password"
             android:text="Change Password" />
@@ -202,7 +198,7 @@
 
         <TextView
             style="@style/viewParent.headerText.settingsMiniTitle"
-            android:text="App ver 2.0.1"
+            android:text="App version 0.1.0"
             android:textAlignment="center" />
 
     </LinearLayout>
