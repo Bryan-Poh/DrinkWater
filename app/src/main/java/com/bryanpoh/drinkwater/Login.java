@@ -29,7 +29,7 @@ import org.w3c.dom.Text;
 public class Login extends AppCompatActivity {
 
     EditText email, password;
-    TextView tvToRegister;
+    TextView tvToRegister, tvToForget;
     Button loginBtn;
 
     FirebaseAuth auth;
@@ -55,6 +55,7 @@ public class Login extends AppCompatActivity {
         password = findViewById(R.id.loginPassword);
         loginBtn = findViewById(R.id.btn_login);
         tvToRegister = findViewById(R.id.tvToRegister);
+        tvToForget = findViewById(R.id.tvToForget);
 
         auth = FirebaseAuth.getInstance();
 
@@ -62,7 +63,14 @@ public class Login extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Login.this, Register.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            }
+        });
+
+        tvToForget.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Login.this, ForgotPassword.class);
                 startActivity(intent);
             }
         });

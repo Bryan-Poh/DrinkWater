@@ -29,6 +29,7 @@
             android:parentActivityName=".MainActivity"/>
         <activity android:name=".EditProfile"
             android:parentActivityName=".SettingsActivity"/>
+        <activity android:name=".ForgotPassword"/>
 
         <service android:name=".BroadcastService"/>
     </application>
