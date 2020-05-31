@@ -2,18 +2,19 @@ package com.bryanpoh.drinkwater;
 
 public class UserData {
 
-    String id, bottleSize, drinkSize, weight, progress;
+    String id, bottleSize, drinkSize, weight, progress, date;
 
     public UserData(){
         // Empty constructor needed
     }
 
-    public UserData(String id, String bottleSize, String drinkSize, String weight, String progress) {
+    public UserData(String id, String bottleSize, String drinkSize, String weight, String progress, String date) {
         this.id = id;
         this.bottleSize = bottleSize;
         this.drinkSize = drinkSize;
         this.weight = weight;
         this.progress = progress;
+        this.date = date;
     }
 
     public String id() {
@@ -62,5 +63,13 @@ public class UserData {
 
     public void setProgress(String progress) {
         this.progress = progress;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }

@@ -179,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void showNotification(){
         String notiMsg = "Reminder to stay hydrated! Drink water now!";
-//
+
         Intent intent = new Intent(MainActivity.this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(MainActivity.this, 0, intent, 0);
@@ -319,8 +319,6 @@ public class MainActivity extends AppCompatActivity {
                 Log.w("tag", "Failed to read value.", error.toException());
             }
         });
-
-
     }
 
     private void saveUserProgress(){
@@ -334,9 +332,11 @@ public class MainActivity extends AppCompatActivity {
         userData.setBottleSize(_BOTTLESIZE);
         userData.setDrinkSize(_DRINKSIZE);
         userData.setProgress(Integer.toString(_PROGRESS));
+        // Get date in epoch unix timestamp
+        long unixTime = System.currentTimeMillis() / 1000L;
+        userData.setDate(Long.toString(unixTime));
 
         Date c = Calendar.getInstance().getTime();
-
         SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
         String formattedDate = df.format(c);
         // Push the data to database
