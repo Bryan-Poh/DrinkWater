@@ -31,6 +31,8 @@
             android:parentActivityName=".SettingsActivity"/>
         <activity android:name=".ForgotPassword"/>
 
+        <activity android:name=".HistoryActivity" android:parentActivityName=".MainActivity"/>
+
         <service android:name=".BroadcastService"/>
     </application>
 

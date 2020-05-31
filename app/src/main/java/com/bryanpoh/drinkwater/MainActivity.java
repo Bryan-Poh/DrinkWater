@@ -23,6 +23,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -41,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
     TextView tvDate, tvIntakeGoal, tvIntakePercent, tvReminder;
     Button drinkBtn;
-    ImageButton settingsBtn;
+    ImageButton settingsBtn, historyBtn;
     ProgressBar intakeProgressBar;
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -49,10 +50,10 @@ public class MainActivity extends AppCompatActivity {
     FirebaseAuth mAuth;
 
     // Global var for user data in this activity
-    String _USERID, _USERNAME, _EMAIL, _DRINKSIZE, _BOTTLESIZE;
+    String _USERID, _USERNAME, _EMAIL, _DRINKSIZE, _BOTTLESIZE, _WEIGHT;
+    int _PROGRESS;
 
-    // How much user drank
-    int currentProgress = 0;
+    int currentProgress;
 
     // String value for progress %
     String currProgressPercent;
@@ -79,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
         tvIntakeGoal = findViewById(R.id.tvIntakeGoal);
         drinkBtn = findViewById(R.id.btnDrink);
         settingsBtn = findViewById(R.id.btnSettings);
+        historyBtn = findViewById(R.id.btnHistory);
         intakeProgressBar = findViewById(R.id.progress_circular);
 
         showUserData();
@@ -86,36 +88,23 @@ public class MainActivity extends AppCompatActivity {
         String date = new SimpleDateFormat("EEE, dd MMM yyyy", Locale.getDefault()).format(new Date());
 
         startService(new Intent(this, BroadcastService.class));
-        /*// Countdown timer for 1 hour
-        new CountDownTimer(3600000, 1000) {
-
-            public void onTick(long millisUntilFinished) {
-                long millis = millisUntilFinished;
-                //Convert milliseconds into hour,minute and seconds
-                String hms = String.format("%02d:%02d:%02d",
-                        TimeUnit.MILLISECONDS.toHours(millis),
-                        TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis)), TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
-                tvReminder.setText(hms);//set text
-            }
-
-            public void onFinish() {
-                showNotification();
-            }
-        }.start();*/
-        //
-
-
 
         tvDate.setText(date);
 
         // Set progress
-        intakeProgressBar.setProgress(currentProgress);
+        /*intakeProgressBar.setProgress(currentProgress);
         String str_currentProgress = currentProgress + "ml";
-        tvIntakePercent.setText(str_currentProgress);
+        tvIntakePercent.setText(str_currentProgress);*/
+
+
 
         drinkBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // How much user drank
+
+
+
 
                 // Add drink to current that user already drank
                 currentProgress += Integer.parseInt(_DRINKSIZE);
@@ -125,6 +114,11 @@ public class MainActivity extends AppCompatActivity {
 
                 String str_currentProgress = currentProgress + "ml";
                 tvIntakePercent.setText(str_currentProgress);
+
+                _PROGRESS = currentProgress;
+
+                saveUserProgress();
+                Toast.makeText(MainActivity.this, "Gulp gulp", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -132,6 +126,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        historyBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, HistoryActivity.class);
+//                Intent intent = new Intent(MainActivity.this, HistoryActivity.class);
                 startActivity(intent);
             }
         });
@@ -215,12 +218,14 @@ public class MainActivity extends AppCompatActivity {
                         String email = ds.child("email").getValue(String.class); // Get username
                         String bottleSize = ds.child("bottleSize").getValue(String.class); // Get
                         String drinkSize = ds.child("drinkSize").getValue(String.class); // Get
+                        String weight = ds.child("weight").getValue(String.class); // Get
 
                         _USERID = key;
                         _USERNAME = username;
                         _EMAIL = email;
                         _DRINKSIZE = drinkSize;
                         _BOTTLESIZE = bottleSize;
+                        _WEIGHT = weight;
                         tvIntakeGoal.setText(_BOTTLESIZE + "ml");
                     }
                 }
@@ -235,5 +240,68 @@ public class MainActivity extends AppCompatActivity {
                 Log.w("tag", "Failed to read value.", error.toException());
             }
         });
+
+        // Read from the database
+        DatabaseReference dbReference;
+//        dbReference = FirebaseDatabase.getInstance().getReference().child("UserProgressData").child(_USERID);
+        dbReference = database.getReference("UserProgressData");
+        dbReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                mAuth = FirebaseAuth.getInstance();
+
+                FirebaseUser currentUser = mAuth.getCurrentUser();
+
+                String currentUserUID = currentUser.getUid();
+                Log.d("tag", "Current user uid : " + currentUserUID);
+
+
+                for (DataSnapshot ds: dataSnapshot.getChildren()) {
+                    if (currentUserUID.equals(ds.getKey())) {
+                        String progress = ds.child("progress").getValue(String.class); // Get
+                        Log.d("PROGRESS", progress);
+                        if(progress == null) {
+                            _PROGRESS = 0;
+                        }else{
+                            _PROGRESS = Integer.parseInt(progress);
+                            Log.d("PROGRESS2", Integer.toString(_PROGRESS));
+                        }
+
+                        intakeProgressBar.setProgress(_PROGRESS);
+                        String str_currentProgress = _PROGRESS + "ml";
+                        tvIntakePercent.setText(str_currentProgress);
+
+                        currentProgress = _PROGRESS;
+                        Log.d("CURRENT PROGRESS2", Integer.toString(currentProgress));
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w("tag", "Failed to read value.", error.toException());
+            }
+        });
+
+
+    }
+
+    private void saveUserProgress(){
+        DatabaseReference dbReference;
+        dbReference = FirebaseDatabase.getInstance().getReference().child("UserProgressData").child(_USERID);
+
+        // Set the user data
+        UserData userData = new UserData();
+        userData.setId(_USERID);
+        userData.setWeight(_WEIGHT);
+        userData.setBottleSize(_BOTTLESIZE);
+        userData.setDrinkSize(_DRINKSIZE);
+        userData.setProgress(Integer.toString(_PROGRESS));
+
+        // Push the data to database
+        dbReference.setValue(userData);
     }
 }
