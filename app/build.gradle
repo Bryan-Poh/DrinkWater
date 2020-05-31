@@ -46,4 +46,6 @@ dependencies {
 
     implementation 'uk.co.chrisjenx:calligraphy:2.3.0'
     implementation 'com.github.marcohc:robotocalendarview:3.6.1'
+
+    implementation 'com.github.f0ris.sweetalert:library:1.6.2'
 }

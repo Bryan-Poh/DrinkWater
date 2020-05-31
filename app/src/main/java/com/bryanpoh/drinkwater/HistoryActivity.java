@@ -3,6 +3,7 @@ package com.bryanpoh.drinkwater;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -60,7 +61,9 @@ public class HistoryActivity extends AppCompatActivity implements RobotoCalendar
 
             switch (style) {
                 case 0:
+                    // Value of calender.getTime() is Wed Jun 17 01:01:15 GMT+08:00 2020
                     robotoCalendarView.markCircleImage1(calendar.getTime());
+                    Log.d("CALENDAR", calendar.getTime().toString());
                     break;
                 case 1:
                     robotoCalendarView.markCircleImage2(calendar.getTime());

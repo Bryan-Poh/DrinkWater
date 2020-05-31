@@ -34,9 +34,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -96,19 +99,13 @@ public class MainActivity extends AppCompatActivity {
         String str_currentProgress = currentProgress + "ml";
         tvIntakePercent.setText(str_currentProgress);*/
 
-
-
         drinkBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // How much user drank
-
-
-
 
                 // Add drink to current that user already drank
                 currentProgress += Integer.parseInt(_DRINKSIZE);
-
+                Log.d("PROGRESS DRINK", Integer.toString(currentProgress));
                 // Set progress bar with current progress
                 intakeProgressBar.setProgress(currentProgress);
 
@@ -116,6 +113,16 @@ public class MainActivity extends AppCompatActivity {
                 tvIntakePercent.setText(str_currentProgress);
 
                 _PROGRESS = currentProgress;
+
+                // If goal already met, show congratulation alert and warning so that user does not over drink
+                if(currentProgress >= Integer.parseInt(_BOTTLESIZE)){
+                    new SweetAlertDialog(MainActivity.this, SweetAlertDialog.CUSTOM_IMAGE_TYPE)
+                            .setTitleText("You did it!")
+                            .setContentText("Congrats, you met your daily water goal! \n Any extra drinks will be a bonus, but remember to not over drink!")
+                            .setCustomImage(R.drawable.party_emoji)
+                            .setConfirmText("Ok, I got it!")
+                            .show();
+                }
 
                 saveUserProgress();
                 Toast.makeText(MainActivity.this, "Gulp gulp", Toast.LENGTH_SHORT).show();
@@ -257,14 +264,41 @@ public class MainActivity extends AppCompatActivity {
                 String currentUserUID = currentUser.getUid();
                 Log.d("tag", "Current user uid : " + currentUserUID);
 
-
                 for (DataSnapshot ds: dataSnapshot.getChildren()) {
                     if (currentUserUID.equals(ds.getKey())) {
-                        String progress = ds.child("progress").getValue(String.class); // Get
-                        Log.d("PROGRESS", progress);
+                        Date c = Calendar.getInstance().getTime();
+                        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+                        String formattedDate = df.format(c);
+
+                        String progress = ds.child(formattedDate).child("progress").getValue(String.class); // Get
+
+                        // Check if database has child that is equals to current date
+                        if(ds.hasChild(formattedDate)){
+                            if(progress == null) {
+                                _PROGRESS = 0;
+                            }else{
+                                _PROGRESS = Integer.parseInt(progress);
+                                Log.d("PROGRESS2", Integer.toString(_PROGRESS));
+                            }
+
+                            intakeProgressBar.setProgress(_PROGRESS);
+                            String str_currentProgress = _PROGRESS + "ml";
+                            tvIntakePercent.setText(str_currentProgress);
+
+                            currentProgress = _PROGRESS;
+                            Log.d("CURRENT PROGRESS2", Integer.toString(currentProgress));
+                        }
+
+                        /*Date c = Calendar.getInstance().getTime();
+
+                        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+                        String formattedDate = df.format(c);
+
+                        String progress = ds.child(formattedDate).child("progress").getValue(String.class); // Get
                         if(progress == null) {
                             _PROGRESS = 0;
                         }else{
+                            Log.d("PROGRESS", progress);
                             _PROGRESS = Integer.parseInt(progress);
                             Log.d("PROGRESS2", Integer.toString(_PROGRESS));
                         }
@@ -274,7 +308,7 @@ public class MainActivity extends AppCompatActivity {
                         tvIntakePercent.setText(str_currentProgress);
 
                         currentProgress = _PROGRESS;
-                        Log.d("CURRENT PROGRESS2", Integer.toString(currentProgress));
+                        Log.d("CURRENT PROGRESS2", Integer.toString(currentProgress));*/
                     }
                 }
             }
@@ -301,7 +335,11 @@ public class MainActivity extends AppCompatActivity {
         userData.setDrinkSize(_DRINKSIZE);
         userData.setProgress(Integer.toString(_PROGRESS));
 
+        Date c = Calendar.getInstance().getTime();
+
+        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+        String formattedDate = df.format(c);
         // Push the data to database
-        dbReference.setValue(userData);
+        dbReference.child(formattedDate).setValue(userData);
     }
 }
