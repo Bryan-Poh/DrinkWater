@@ -163,16 +163,6 @@
 
         <TextView
             style="@style/viewParent.headerText.settingsMiniTitle"
-            android:text="Profile" />
-
-        <TextView
-            style="@style/viewParent.headerText.settingsTextIcon"
-            android:layout_marginTop="10dp"
-            android:drawableLeft="@drawable/ic_edit_password"
-            android:text="Change Password" />
-
-        <TextView
-            style="@style/viewParent.headerText.settingsMiniTitle"
             android:text="Notifications" />
 
         <Switch

@@ -119,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
                     new SweetAlertDialog(MainActivity.this, SweetAlertDialog.CUSTOM_IMAGE_TYPE)
                             .setTitleText("You did it!")
                             .setContentText("Congrats, you met your daily water goal! \n Any extra drinks will be a bonus, but remember to not over drink!")
-                            .setCustomImage(R.drawable.party_emoji)
+                            .setCustomImage(R.drawable.partycone)
                             .setConfirmText("Ok, I got it!")
                             .show();
                 }
